@@ -1,0 +1,37 @@
+{
+  "name": "minibrowser",
+  "productName": "MiniBrowser",
+  "version": "1.0.0",
+  "description": "Kurulum ve yönetici yetkisi gerektirmeyen, proxy destekli portable Chromium (Electron) tarayıcı.",
+  "main": "src/main/main.js",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "start": "electron . --data-dir=./MiniBrowserData",
+    "test": "node --test \"test/unit/*.test.js\"",
+    "test:e2e": "node --test --test-concurrency=1 \"test/e2e/*.test.js\"",
+    "test:all": "node --test --test-concurrency=1 \"test/unit/*.test.js\" \"test/e2e/*.test.js\"",
+    "dist:win": "electron-builder --win portable zip --x64"
+  },
+  "devDependencies": {
+    "electron": "45.0.0",
+    "electron-builder": "26.18.0"
+  },
+  "build": {
+    "appId": "local.minibrowser.portable",
+    "productName": "MiniBrowser",
+    "directories": { "output": "dist" },
+    "files": ["src/**/*", "config/**/*", "package.json"],
+    "extraFiles": [
+      { "from": "MiniBrowser.bat", "to": "MiniBrowser.bat" }
+    ],
+    "win": {
+      "target": ["portable", "zip"],
+      "requestedExecutionLevel": "asInvoker"
+    },
+    "portable": {
+      "artifactName": "MiniBrowser-${version}-portable.exe",
+      "requestExecutionLevel": "user"
+    }
+  }
+}

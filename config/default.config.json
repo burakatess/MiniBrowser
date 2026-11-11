@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "homepage": "https://example.com/",
+  "searchUrl": "https://duckduckgo.com/?q=%s",
+  "proxy": {
+    "mode": "system",
+    "type": "http",
+    "host": "",
+    "port": 8080,
+    "bypass": ["<local>"]
+  },
+  "window": { "width": 1200, "height": 800 }
+}

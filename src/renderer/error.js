@@ -1,0 +1,13 @@
+'use strict';
+const q = new URLSearchParams(location.search);
+const text = (id, v) => (document.getElementById(id).textContent = v);
+text('title', q.get('title') || 'Sayfa yüklenemedi');
+text('hint', q.get('hint') || '');
+text('url', q.get('url') || '');
+text('code', q.get('name') ? `${q.get('name')} (${q.get('code')})` : '');
+document.title = q.get('title') || document.title;
+if (q.get('proxy') === '1') document.getElementById('proxy-note').classList.remove('hidden');
+const target = q.get('url');
+const retry = document.getElementById('retry');
+if (!target || !/^https?:/i.test(target)) retry.classList.add('hidden');
+retry.addEventListener('click', () => location.assign(target));

@@ -1,0 +1,17 @@
+html, body { height: 48px; overflow: hidden; }
+.toolbar {
+  height: 48px; display: flex; align-items: center; gap: 6px; padding: 0 8px;
+  background: var(--surface); border-bottom: 1px solid var(--border);
+}
+.toolbar > button { min-width: 34px; padding: 5px 8px; }
+.address { flex: 1; min-width: 80px; }
+.address input { border-radius: 999px; padding: 6px 14px; }
+.badge { font-size: 12px; white-space: nowrap; max-width: 220px; overflow: hidden; text-overflow: ellipsis; color: var(--muted); }
+.badge.manual { color: var(--ok); border-color: var(--ok); background: var(--ok-bg); }
+.notice {
+  position: fixed; top: 6px; left: 50%; transform: translateX(-50%);
+  max-width: 90%; display: flex; gap: 8px; align-items: center;
+  background: var(--warn-bg); border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 4px 4px 4px 12px; font-size: 13px; z-index: 10;
+}
+.notice button { padding: 0 8px; border: 0; background: transparent; }

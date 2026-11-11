@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'">
+  <title>MiniBrowser</title>
+  <link rel="stylesheet" href="common.css">
+  <link rel="stylesheet" href="browser.css">
+</head>
+<body>
+  <header class="toolbar">
+    <button id="back" title="Geri (Alt+Sol)" aria-label="Geri" disabled>←</button>
+    <button id="forward" title="İleri (Alt+Sağ)" aria-label="İleri" disabled>→</button>
+    <button id="reload" title="Yenile (F5)" aria-label="Yenile">⟳</button>
+    <button id="home" title="Ana sayfa" aria-label="Ana sayfa">⌂</button>
+    <form id="address-form" class="address">
+      <input id="address" type="text" spellcheck="false" autocomplete="off"
+             placeholder="Adres yazın veya arayın" aria-label="Adres çubuğu">
+    </form>
+    <button id="proxy-badge" class="badge" title="Proxy durumu — ayarları aç">…</button>
+    <button id="settings" title="Proxy ayarları" aria-label="Ayarlar">⚙</button>
+  </header>
+  <div id="notice" class="notice hidden" role="alert">
+    <span id="notice-text"></span>
+    <button id="notice-close" aria-label="Kapat">×</button>
+  </div>
+  <script src="browser.js"></script>
+</body>
+</html>

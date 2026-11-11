@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'">
+  <title>Kimlik doğrulama</title>
+  <link rel="stylesheet" href="common.css">
+  <link rel="stylesheet" href="auth.css">
+</head>
+<body>
+  <form id="form">
+    <h1 id="heading">Kimlik doğrulama gerekli</h1>
+    <p class="muted" id="desc"></p>
+    <label>Kullanıcı adı <input id="user" autocomplete="username" required></label>
+    <label>Parola <input id="pass" type="password" autocomplete="current-password"></label>
+    <p class="muted small">Bilgiler yalnızca bu oturumda kullanılır, diske kaydedilmez.</p>
+    <div class="actions">
+      <button type="button" id="cancel">İptal</button>
+      <button type="submit" class="primary">Giriş</button>
+    </div>
+  </form>
+  <script src="auth.js"></script>
+</body>
+</html>

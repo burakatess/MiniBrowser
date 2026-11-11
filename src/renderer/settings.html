@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'">
+  <title>MiniBrowser — Proxy Ayarları</title>
+  <link rel="stylesheet" href="common.css">
+  <link rel="stylesheet" href="settings.css">
+</head>
+<body>
+  <main>
+    <h1>Proxy ayarları</h1>
+    <p class="muted">Ayarlar yalnızca MiniBrowser'ı etkiler; Windows sistem ayarları değiştirilmez.</p>
+
+    <form id="form" novalidate>
+      <fieldset>
+        <legend>Bağlantı modu</legend>
+        <label class="radio"><input type="radio" name="mode" value="system">
+          <span><b>Sistem ayarları</b><small>Windows / kurum proxy ve PAC ayarlarını kullanır (önerilen).</small></span></label>
+        <label class="radio"><input type="radio" name="mode" value="manual">
+          <span><b>Manuel proxy</b><small>HTTP, HTTPS veya SOCKS5 sunucusu belirtin.</small></span></label>
+        <label class="radio"><input type="radio" name="mode" value="direct">
+          <span><b>Doğrudan</b><small>Proxy kullanılmaz.</small></span></label>
+      </fieldset>
+
+      <fieldset id="manual-fields">
+        <legend>Proxy sunucusu</legend>
+        <div class="row">
+          <label class="field type">Tür
+            <select id="type" name="type">
+              <option value="http">HTTP</option>
+              <option value="https">HTTPS</option>
+              <option value="socks5">SOCKS5</option>
+            </select>
+          </label>
+          <label class="field host">Sunucu
+            <input id="host" name="host" placeholder="proxy.ornek.local veya 10.0.0.5" spellcheck="false">
+          </label>
+          <label class="field port">Port
+            <input id="port" name="port" type="number" min="1" max="65535" inputmode="numeric">
+          </label>
+        </div>
+        <p class="error" id="err-host"></p>
+        <p class="error" id="err-port"></p>
+        <label class="field">Proxy kullanılmayacak adresler <small>(virgül veya satır ile ayırın)</small>
+          <textarea id="bypass" name="bypass" rows="3" spellcheck="false" placeholder="<local>, *.ornek.local, 10.0.0.0/8"></textarea>
+        </label>
+        <p class="error" id="err-bypass"></p>
+        <p class="hint" id="type-hint"></p>
+      </fieldset>
+
+      <fieldset>
+        <legend>Genel</legend>
+        <label class="field">Ana sayfa
+          <input id="homepage" name="homepage" type="url" spellcheck="false">
+        </label>
+        <p class="error" id="err-homepage"></p>
+      </fieldset>
+
+      <div id="result" class="result hidden" role="status" aria-live="polite"></div>
+
+      <div class="actions">
+        <button type="button" id="test">Bağlantıyı test et</button>
+        <span class="spacer"></span>
+        <button type="button" id="cancel">Kapat</button>
+        <button type="submit" class="primary" id="save">Kaydet ve uygula</button>
+      </div>
+    </form>
+
+    <footer class="muted">
+      <div>Yapılandırma: <code id="config-path"></code></div>
+      <div>Profil: <code id="profile-path"></code></div>
+      <button type="button" id="open-data" class="link">Veri klasörünü aç</button>
+    </footer>
+  </main>
+  <script src="settings-form.js"></script>
+  <script src="settings.js"></script>
+</body>
+</html>

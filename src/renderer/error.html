@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'">
+  <title>Sayfa yüklenemedi</title>
+  <link rel="stylesheet" href="common.css">
+  <link rel="stylesheet" href="error.css">
+</head>
+<body>
+  <main>
+    <div class="icon" aria-hidden="true">⚠</div>
+    <h1 id="title">Sayfa yüklenemedi</h1>
+    <p id="hint"></p>
+    <p class="url" id="url"></p>
+    <p class="code" id="code"></p>
+    <p class="proxy hidden" id="proxy-note">Üst çubuktaki <b>⚙</b> düğmesinden proxy ayarlarını açıp “Bağlantıyı test et” ile kontrol edebilirsiniz.</p>
+    <button class="primary" id="retry">Tekrar dene</button>
+  </main>
+  <script src="error.js"></script>
+</body>
+</html>
