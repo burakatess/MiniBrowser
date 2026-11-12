@@ -21,11 +21,11 @@ ile yazılmış ayar ekranı, JSON yapılandırma dosyası ve uygulamaya özel a
 
 ## Kullanım (son kullanıcı)
 
-1. `MiniBrowser-1.0.0-win.zip` dosyasını yazma izniniz olan bir klasöre (ör. `Belgeler` veya USB bellek) **çıkartın**.
+1. `MiniBrowser-1.1.0-win.zip` dosyasını yazma izniniz olan bir klasöre (ör. `Belgeler` veya USB bellek) **çıkartın**.
 2. `MiniBrowser.bat` dosyasına çift tıklayın (veya doğrudan `MiniBrowser.exe`).
 3. Üst çubuktaki **⚙** düğmesi veya proxy rozeti ile proxy ayarlarını açın, **Bağlantıyı test et**, ardından **Kaydet ve uygula**.
 
-Tek dosya isteyenler için `MiniBrowser-1.0.0-portable.exe` de üretilir; verileri exe'nin bulunduğu klasördeki
+Tek dosya isteyenler için `MiniBrowser-1.1.0-portable.exe` de üretilir; verileri exe'nin bulunduğu klasördeki
 `MiniBrowserData\` altında tutar.
 
 ```bat

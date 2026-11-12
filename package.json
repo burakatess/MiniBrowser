@@ -1,7 +1,7 @@
 {
   "name": "minibrowser",
   "productName": "MiniBrowser",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Kurulum ve yönetici yetkisi gerektirmeyen, proxy destekli portable Chromium (Electron) tarayıcı.",
   "main": "src/main/main.js",
   "license": "MIT",
@@ -20,13 +20,25 @@
   "build": {
     "appId": "local.minibrowser.portable",
     "productName": "MiniBrowser",
-    "directories": { "output": "dist" },
-    "files": ["src/**/*", "config/**/*", "package.json"],
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "src/**/*",
+      "config/**/*",
+      "package.json"
+    ],
     "extraFiles": [
-      { "from": "MiniBrowser.bat", "to": "MiniBrowser.bat" }
+      {
+        "from": "MiniBrowser.bat",
+        "to": "MiniBrowser.bat"
+      }
     ],
     "win": {
-      "target": ["portable", "zip"],
+      "target": [
+        "portable",
+        "zip"
+      ],
       "requestedExecutionLevel": "asInvoker"
     },
     "portable": {
