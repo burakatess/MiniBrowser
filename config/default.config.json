@@ -7,7 +7,21 @@
     "type": "http",
     "host": "",
     "port": 8080,
-    "bypass": ["<local>"]
+    "bypass": [
+      "<local>"
+    ]
   },
-  "window": { "width": 1200, "height": 800 }
+  "tunnel": {
+    "host": "",
+    "port": 22,
+    "user": "",
+    "identityFile": "",
+    "localPort": 0,
+    "autoConnect": false,
+    "sshPath": ""
+  },
+  "window": {
+    "width": 1200,
+    "height": 800
+  }
 }

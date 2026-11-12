@@ -3,8 +3,11 @@
 const http = require('node:http');
 const net = require('node:net');
 
-const listen = (server) =>
-  new Promise((resolve) => server.listen(0, '127.0.0.1', () => resolve(server.address().port)));
+const listen = (server, port = 0) =>
+  new Promise((resolve, reject) => {
+    server.once('error', reject);
+    server.listen(port, '127.0.0.1', () => resolve(server.address().port));
+  });
 
 /** "Merhaba" sayfası döndüren hedef sunucu. */
 async function startTargetServer() {
@@ -64,7 +67,7 @@ async function startHttpProxy(targetPort, { requireAuth = null } = {}) {
 }
 
 /** Kimlik doğrulamasız SOCKS5 (RFC 1928) sunucusu; tüm hedefleri targetPort'a yönlendirir. */
-async function startSocks5Proxy(targetPort) {
+async function startSocks5Proxy(targetPort, { listenPort = 0 } = {}) {
   const log = [];
   const sockets = new Set();
   const server = net.createServer((client) => {
@@ -95,6 +98,7 @@ async function startSocks5Proxy(targetPort) {
         const rest = buf.subarray(off + 2);
         stage = 'piping';
         client.removeListener('data', onData);
+        if (!targetPort) return client.destroy(); // yalnızca el sıkışma (yoklama) için
         log.push({ host, port, atyp });
         const up = net.connect(targetPort, '127.0.0.1', () => {
           client.write(Buffer.from([5, 0, 0, 1, 127, 0, 0, 1, 0, 0]));
@@ -106,7 +110,7 @@ async function startSocks5Proxy(targetPort) {
     };
     client.on('data', onData);
   });
-  const port = await listen(server);
+  const port = await listen(server, listenPort);
   return {
     port,
     log,

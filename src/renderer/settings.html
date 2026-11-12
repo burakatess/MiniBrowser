@@ -3,13 +3,13 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'">
-  <title>MiniBrowser — Proxy Ayarları</title>
+  <title>MiniBrowser — Ayarlar</title>
   <link rel="stylesheet" href="common.css">
   <link rel="stylesheet" href="settings.css">
 </head>
 <body>
   <main>
-    <h1>Proxy ayarları</h1>
+    <h1>Ayarlar</h1>
     <p class="muted">Ayarlar yalnızca MiniBrowser'ı etkiler; Windows sistem ayarları değiştirilmez.</p>
 
     <form id="form" novalidate>
@@ -47,6 +47,56 @@
         </label>
         <p class="error" id="err-bypass"></p>
         <p class="hint" id="type-hint"></p>
+      </fieldset>
+
+      <fieldset id="tunnel-fields">
+        <legend>VPN (SSH tüneli)</legend>
+        <p class="hint">Tarayıcı trafiğini <b>kendi</b> SSH sunucunuz üzerinden şifreli olarak geçirir.
+          Windows'un yerleşik OpenSSH istemcisini kullanır; kurulum veya yönetici yetkisi gerekmez.
+          Yalnızca SSH anahtarı / ssh-agent ile giriş desteklenir. Kurumsal ağlarda kullanmadan önce
+          BT politikanızı kontrol edin; ağ SSH'ye izin vermiyorsa tünel kurulamaz.</p>
+        <div class="row">
+          <label class="field host">SSH sunucusu
+            <input id="t-host" placeholder="sunucum.ornek.com" spellcheck="false">
+          </label>
+          <label class="field port">Port
+            <input id="t-port" type="number" min="1" max="65535" inputmode="numeric">
+          </label>
+        </div>
+        <p class="error" id="err-t-host"></p>
+        <p class="error" id="err-t-port"></p>
+        <label class="field">Kullanıcı adı
+          <input id="t-user" spellcheck="false" autocomplete="off">
+        </label>
+        <p class="error" id="err-t-user"></p>
+        <label class="field">Özel anahtar dosyası <small>(boş: ssh-agent / varsayılan anahtarlar)</small>
+          <span class="with-button">
+            <input id="t-identityFile" spellcheck="false" placeholder="C:\Users\ad\.ssh\id_ed25519">
+            <button type="button" id="pick-key">Gözat…</button>
+          </span>
+        </label>
+        <p class="error" id="err-t-identityFile"></p>
+        <div class="row">
+          <label class="field port">Yerel port
+            <input id="t-localPort" type="number" min="0" max="65535" inputmode="numeric" title="0 = otomatik">
+          </label>
+          <label class="field check"><input type="checkbox" id="t-autoConnect"> Başlangıçta otomatik bağlan</label>
+        </div>
+        <p class="error" id="err-t-localPort"></p>
+        <details>
+          <summary>Gelişmiş</summary>
+          <label class="field">ssh.exe yolu <small>(boş: otomatik bul)</small>
+            <input id="t-sshPath" spellcheck="false" placeholder="C:\Windows\System32\OpenSSH\ssh.exe">
+          </label>
+          <p class="error" id="err-t-sshPath"></p>
+        </details>
+        <div class="tunnel-status">
+          <span id="tunnel-state" class="pill">Kapalı</span>
+          <span id="tunnel-message" class="muted"></span>
+          <span class="spacer"></span>
+          <button type="button" id="tunnel-connect">Kaydet ve bağlan</button>
+          <button type="button" id="tunnel-disconnect" class="hidden">Bağlantıyı kes</button>
+        </div>
       </fieldset>
 
       <fieldset>

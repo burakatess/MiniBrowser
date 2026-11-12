@@ -75,3 +75,28 @@ test('"Bağlantıyı test et": çalışan HTTP proxy başarılı, kapalı proxy 
   assert.match(badRun.result.settings.resultText, /Bağlantı başarısız/);
   assert.match(badRun.result.settings.resultClass, /\berr\b/);
 });
+
+test('ayar ekranı: VPN alanları kaydedilir ve "Kaydet ve bağlan" tüneli açar', { skip: process.platform === 'win32' }, async () => {
+  const { makeFakeSsh } = require('../helpers/fake-ssh-wrapper');
+  const fake = makeFakeSsh({ targetPort: target.port });
+  const dataDir = makeDataDir({ proxy: { mode: 'direct' } });
+  const { result } = await run(dataDir, {
+    action: 'connect',
+    screenshotDir: process.env.MINIBROWSER_SCREENSHOTS || null,
+    tunnel: { host: 'tunel.ornek.test', port: '2222', user: 'ali', sshPath: fake.sshPath, autoConnect: true },
+  });
+  const s = result.settings;
+  assert.match(s.resultClass, /\bok\b/, JSON.stringify(s));
+  assert.match(s.resultText, /VPN açık/);
+  assert.equal(s.savedConfig.tunnel.host, 'tunel.ornek.test');
+  assert.equal(s.savedConfig.tunnel.port, 2222);
+  assert.equal(s.savedConfig.tunnel.autoConnect, true);
+  assert.equal(fake.readArgs().user, 'ali');
+});
+
+test('ayar ekranı: VPN için sunucu girilmeden bağlanılamaz', async () => {
+  const dataDir = makeDataDir({ proxy: { mode: 'direct' } });
+  const { result } = await run(dataDir, { action: 'connect', tunnel: { host: '', user: '' } });
+  assert.match(result.settings.errors['err-t-host'], /zorunlu/);
+  assert.match(result.settings.errors['err-t-user'], /zorunlu/);
+});
