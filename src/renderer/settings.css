@@ -23,3 +23,15 @@ fieldset:disabled { opacity: .55; }
 footer { margin-top: 18px; display: grid; gap: 4px; }
 code { word-break: break-all; }
 button.link { border: 0; background: none; color: var(--accent); padding: 0; justify-self: start; }
+.with-button { display: flex; gap: 6px; margin-top: 4px; }
+.with-button input { margin-top: 0; }
+.field.check { display: flex; align-items: center; gap: 8px; flex: 1 1 200px; padding-top: 18px; }
+.field.check input { width: auto; margin: 0; }
+details { margin-top: 8px; font-size: 13px; }
+summary { cursor: pointer; color: var(--muted); }
+.tunnel-status { display: flex; gap: 8px; align-items: center; margin-top: 12px; flex-wrap: wrap; }
+.pill { font-size: 12px; font-weight: 600; padding: 2px 10px; border-radius: 999px; background: var(--bg); border: 1px solid var(--border); }
+.pill.connected { color: var(--ok); background: var(--ok-bg); border-color: var(--ok); }
+.pill.connecting { background: var(--warn-bg); }
+.pill.error { color: var(--err); background: var(--err-bg); border-color: var(--err); }
+#tunnel-message { flex: 1 1 100%; order: 5; }

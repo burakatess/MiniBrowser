@@ -56,7 +56,22 @@ test('Kaynak kod güvenlik ayarlarını gevşetmez', () => {
     assert.ok(!/ignore-certificate-errors|allow-insecure-localhost|disable-web-security|no-sandbox/.test(s), `${f}: güvensiz anahtar`);
     assert.ok(!/certificate-error/.test(s), `${f}: sertifika hatası işleyicisi olmamalı`);
     assert.ok(!/setCertificateVerifyProc/.test(s), `${f}: sertifika doğrulaması değiştirilmemeli`);
-    assert.ok(!/child_process|execSync|\bspawn\(/.test(s), `${f}: harici komut çalıştırılmamalı`);
+    assert.ok(!/\bexec(Sync|File|FileSync)?\(|shell:\s*true/.test(s), `${f}: kabuk/exec kullanılmamalı`);
+    if (!f.endsWith(path.join('main', 'tunnel.js'))) {
+      assert.ok(!/child_process|\bspawn\(/.test(s), `${f}: harici süreç yalnızca tunnel.js'de başlatılabilir`);
+    }
+  }
+});
+
+test('Tünel: ssh yalnızca argüman dizisiyle, kabuksuz ve güvenli seçeneklerle başlatılır', () => {
+  // Yorumlar hariç, yalnızca kod denetlenir.
+  const s = read('src/main/tunnel.js').replace(/\/\*[\s\S]*?\*\//g, '').replace(/^\s*\/\/.*$/gm, '');
+  assert.match(s, /shell: false/);
+  assert.match(s, /BatchMode=yes/);
+  assert.match(s, /StrictHostKeyChecking=accept-new/);
+  assert.match(s, /'-D', `127\.0\.0\.1:/, 'SOCKS yalnızca yerel adrese bağlanmalı');
+  for (const bad of ['StrictHostKeyChecking=no', 'ProxyCommand', 'GatewayPorts', 'UserKnownHostsFile=/dev/null']) {
+    assert.ok(!s.includes(bad), bad);
   }
 });
 

@@ -24,21 +24,37 @@
       .filter(Boolean);
   }
 
+  const toPort = (v) => {
+    const text = String(v ?? '').trim();
+    return /^\d+$/.test(text) ? Number(text) : text;
+  };
+  const str = (v) => String(v ?? '').trim();
+
   function formToConfig(values) {
-    const portText = String(values.port ?? '').trim();
+    const t = values.tunnel || {};
     return {
-      homepage: String(values.homepage || '').trim(),
+      homepage: str(values.homepage),
       proxy: {
         mode: values.mode,
         type: values.type,
-        host: String(values.host || '').trim(),
-        port: /^\d+$/.test(portText) ? Number(portText) : portText,
+        host: str(values.host),
+        port: toPort(values.port),
         bypass: splitBypass(values.bypass),
+      },
+      tunnel: {
+        host: str(t.host),
+        port: toPort(t.port || 22),
+        user: str(t.user),
+        identityFile: str(t.identityFile),
+        localPort: str(t.localPort) === '' ? 0 : toPort(t.localPort),
+        autoConnect: t.autoConnect === true,
+        sshPath: str(t.sshPath),
       },
     };
   }
 
   function configToForm(config) {
+    const t = config.tunnel || {};
     return {
       mode: config.proxy.mode,
       type: config.proxy.type,
@@ -46,7 +62,33 @@
       port: String(config.proxy.port ?? ''),
       bypass: (config.proxy.bypass || []).join(', '),
       homepage: config.homepage,
+      tunnel: {
+        host: t.host || '',
+        port: String(t.port ?? 22),
+        user: t.user || '',
+        identityFile: t.identityFile || '',
+        localPort: String(t.localPort ?? 0),
+        autoConnect: t.autoConnect === true,
+        sshPath: t.sshPath || '',
+      },
     };
+  }
+
+  /** Tünel alanları; `forConnect` true ise bağlanmak için gerekenler zorunlu. Anahtarlar "t-<alan>". */
+  function quickValidateTunnel(t, { forConnect = false } = {}) {
+    const errors = {};
+    if (!t) return errors;
+    if (t.host && (/\s/.test(t.host) || t.host.startsWith('-') || /:\/\//.test(t.host))) errors['t-host'] = 'Geçersiz sunucu adresi.';
+    if (!Number.isInteger(t.port) || t.port < 1 || t.port > 65535) errors['t-port'] = 'Port 1–65535 arasında olmalıdır.';
+    if (t.user && !/^[A-Za-z0-9._][A-Za-z0-9._@\\-]*$/.test(t.user)) errors['t-user'] = 'Kullanıcı adında geçersiz karakter var.';
+    if (!(t.localPort === 0 || (Number.isInteger(t.localPort) && t.localPort >= 1024 && t.localPort <= 65535))) {
+      errors['t-localPort'] = 'Yerel port 0 (otomatik) veya 1024–65535 olmalıdır.';
+    }
+    if (forConnect) {
+      if (!t.host) errors['t-host'] = 'VPN için SSH sunucusu zorunludur.';
+      if (!t.user) errors['t-user'] = 'VPN için kullanıcı adı zorunludur.';
+    }
+    return errors;
   }
 
   /** Alan -> hata mesajı. Boş nesne = sorun yok. */
@@ -62,8 +104,8 @@
     const bad = p.bypass.find((b) => /\s/.test(b));
     if (bad) errors.bypass = `Geçersiz girdi: "${bad}"`;
     if (!/^https?:\/\/\S+$/i.test(cfg.homepage)) errors.homepage = 'Ana sayfa http:// veya https:// ile başlamalıdır.';
-    return errors;
+    return Object.assign(errors, quickValidateTunnel(cfg.tunnel));
   }
 
-  return { DEFAULT_PORTS, TYPE_HINTS, splitBypass, formToConfig, configToForm, quickValidate };
+  return { DEFAULT_PORTS, TYPE_HINTS, splitBypass, formToConfig, configToForm, quickValidate, quickValidateTunnel };
 });

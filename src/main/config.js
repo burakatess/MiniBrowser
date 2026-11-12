@@ -7,6 +7,7 @@
 const fs = require('node:fs');
 const path = require('node:path');
 const { validateProxySettings, ProxyValidationError } = require('./proxy');
+const { validateTunnelSettings, TunnelValidationError, DEFAULT_TUNNEL } = require('./tunnel');
 
 const CONFIG_VERSION = 1;
 
@@ -15,6 +16,7 @@ const DEFAULT_CONFIG = Object.freeze({
   homepage: 'https://example.com/',
   searchUrl: 'https://duckduckgo.com/?q=%s',
   proxy: Object.freeze({ mode: 'system', type: 'http', host: '', port: 8080, bypass: ['<local>'] }),
+  tunnel: DEFAULT_TUNNEL,
   window: Object.freeze({ width: 1200, height: 800 }),
 });
 
@@ -75,12 +77,20 @@ function validateConfig(raw) {
     throw err;
   }
 
+  let tunnel;
+  try {
+    tunnel = validateTunnelSettings({ ...d.tunnel, ...(raw.tunnel || {}) });
+  } catch (err) {
+    if (err instanceof TunnelValidationError) throw new ConfigError(`tunnel.${err.field}`, err.message);
+    throw err;
+  }
+
   const w = raw.window || {};
   const window = {
     width: clampInt(w.width, 400, 10000, d.window.width),
     height: clampInt(w.height, 300, 10000, d.window.height),
   };
-  return { version: CONFIG_VERSION, homepage, searchUrl, proxy, window };
+  return { version: CONFIG_VERSION, homepage, searchUrl, proxy, tunnel, window };
 }
 
 /**

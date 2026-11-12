@@ -8,6 +8,10 @@
   <link rel="stylesheet" href="browser.css">
 </head>
 <body>
+  <div class="tabstrip">
+    <div id="tabs" class="tabs" role="tablist" aria-label="Sekmeler"></div>
+    <button id="new-tab" class="new-tab" title="Yeni sekme (Ctrl+T)" aria-label="Yeni sekme">+</button>
+  </div>
   <header class="toolbar">
     <button id="back" title="Geri (Alt+Sol)" aria-label="Geri" disabled>←</button>
     <button id="forward" title="İleri (Alt+Sağ)" aria-label="İleri" disabled>→</button>
@@ -17,8 +21,9 @@
       <input id="address" type="text" spellcheck="false" autocomplete="off"
              placeholder="Adres yazın veya arayın" aria-label="Adres çubuğu">
     </form>
+    <button id="vpn" class="vpn" title="VPN (SSH tüneli) aç/kapat" aria-pressed="false">VPN</button>
     <button id="proxy-badge" class="badge" title="Proxy durumu — ayarları aç">…</button>
-    <button id="settings" title="Proxy ayarları" aria-label="Ayarlar">⚙</button>
+    <button id="settings" title="Ayarlar" aria-label="Ayarlar">⚙</button>
   </header>
   <div id="notice" class="notice hidden" role="alert">
     <span id="notice-text"></span>

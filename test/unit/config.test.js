@@ -75,3 +75,14 @@ test('config/default.config.json geçerli ve koddaki varsayılanlarla aynı', ()
   const parsed = JSON.parse(fs.readFileSync(file, 'utf8'));
   assert.deepEqual(c.validateConfig(parsed), c.validateConfig(c.DEFAULT_CONFIG));
 });
+
+test('tünel ayarları doğrulanır ve kaydedilir', () => {
+  const f = tmpFile();
+  c.saveConfig(f, { tunnel: { host: 'ssh.example', port: 2222, user: 'ali', autoConnect: true } });
+  const r = c.loadConfig(f);
+  assert.equal(r.config.tunnel.host, 'ssh.example');
+  assert.equal(r.config.tunnel.port, 2222);
+  assert.equal(r.config.tunnel.autoConnect, true);
+  assert.equal(r.config.tunnel.localPort, 0);
+  assert.throws(() => c.validateConfig({ tunnel: { host: '-oProxyCommand=x' } }), (e) => e.field === 'tunnel.host');
+});
